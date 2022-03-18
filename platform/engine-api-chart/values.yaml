@@ -1,0 +1,11 @@
+replicaCount: 1
+containerPort: 5000
+
+service:
+  port: 80
+  protocol: TCP
+  targetPort: 5000
+  type: NodePort
+
+ingress:
+  port: 80

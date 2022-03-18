@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: engine-api
+    version: v1
+  name: {{ .Release.Name }}-svc
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: http
+    port: {{ .Values.service.port }}
+    protocol: {{ .Values.service.protocol }}
+    targetPort: {{ .Values.service.targetPort }}
+  selector:
+    app: engine-api
+  type: {{ .Values.service.type }}
