@@ -26,6 +26,8 @@ pipelines:
             - docker build -t $IMAGE_NAME .
             - echo -n "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
             - docker push $IMAGE_NAME
+          after-script:
+            - rm -f /root/.docker/config.json
       # - step:
       #     name: Deploy to dev env
       #     deployment: dev
@@ -50,7 +52,7 @@ pipelines:
             - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $AWS_EKS_CLUSTER_NAME
             - kubectl get svc #remove this
             - helm upgrade alpha ./platform/engine-api-chart --install --set deployment.imageTag=$BITBUCKET_COMMIT -n alpha
-            - helm list
+            - helm list -n alpha
           after-script:
             - rm -rf ~/.aws/credentials
             - rm -rf ~/.kube
