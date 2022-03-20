@@ -12,5 +12,5 @@ spec:
   - route:
     - destination:
         host: {{ .Release.Name }}-svc
-        port:
-          number: {{ .Values.service.port }}
+        subset: v1
+      weight: 100
