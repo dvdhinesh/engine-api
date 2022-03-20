@@ -12,10 +12,10 @@ pipelines:
             - echo "This step will run on a list of unit tests.";
   branches:
     main:
-      - step:
-          name: Run unit tests
-          script:
-            - echo "This step will run on a list of unit tests.";
+      # - step:
+      #     name: Run unit tests
+      #     script:
+      #       - echo "This step will run on a list of unit tests.";
       - step:
           name: Build and Push docker image
           script:
@@ -24,18 +24,18 @@ pipelines:
             - echo $BITBUCKET_COMMIT #remove this
             - echo $IMAGE_NAME #remove this
             - docker build -t $IMAGE_NAME .
-            - $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+            - echo -n "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
             - docker push $IMAGE_NAME
-      - step:
-          name: Deploy to dev env
-          deployment: dev
-          script:
-            - echo "This step will deploy to dev environment.";
-      - step:
-          name: Deploy to staging env
-          deployment: staging
-          script:
-            - echo "This step will deploy to staging environment.";
+      # - step:
+      #     name: Deploy to dev env
+      #     deployment: dev
+      #     script:
+      #       - echo "This step will deploy to dev environment.";
+      # - step:
+      #     name: Deploy to staging env
+      #     deployment: staging
+      #     script:
+      #       - echo "This step will deploy to staging environment.";
       - step:
           name: Deploy to production env
           deployment: production
