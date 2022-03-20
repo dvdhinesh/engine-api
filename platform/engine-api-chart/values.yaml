@@ -1,6 +1,9 @@
 replicaCount: 1
 containerPort: 5000
 
+deployment:
+   imageTag: latest
+
 service:
   port: 80
   protocol: TCP

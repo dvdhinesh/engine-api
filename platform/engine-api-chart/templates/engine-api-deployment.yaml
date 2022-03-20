@@ -27,7 +27,7 @@ spec:
         prometheus.io/path: '/metrics'
     spec:
       containers:
-      - image: dvdhinesh/engine-api
+      - image: dvdhinesh/engine-api:{{ .Values.deployment.imageTag }}
         imagePullPolicy: Always
         name: engine-api
         ports:

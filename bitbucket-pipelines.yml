@@ -1,5 +1,5 @@
 # This is an example Starter pipeline configuration
-image: dvdhinesh/helm-base
+image: docker:latest
 
 pipelines:
   pull-requests:
@@ -11,24 +11,47 @@ pipelines:
   branches:
     main:
       - step:
+          name: Run unit tests
+          script:
+            - echo "This step will run on a list of unit tests.";
+      - step:
+          name: Build and Push docker image
+          script:
+            - echo "This step will build images.";
+            - export IMAGE_NAME=dvdhinesh/engine-api:production-$BITBUCKET_COMMIT
+            - echo $BITBUCKET_COMMIT #remove this
+            - echo $IMAGE_NAME #remove this
+            - docker build -t $IMAGE_NAME .
+            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+            - docker push $IMAGE_NAME
+      - step:
           name: Deploy to dev env
           deployment: dev
           script:
-            - echo "This step will run on a list of unit tests.";
             - echo "This step will deploy to dev environment.";
       - step:
           name: Deploy to staging env
           deployment: staging
           script:
-            - echo "This step will run on a list of unit tests.";
             - echo "This step will deploy to staging environment.";
       - step:
           name: Deploy to production env
           deployment: production
           trigger: manual
+          image: dvdhinesh/helm-base
           script:
             - echo "This step will run on a list of unit tests.";
-            - echo "This step will deploy to staging environment.";
+            - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            - aws configure set default.region $AWS_DEFAULT_REGION
+            - aws eks list-clusters #remove this
+            - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $AWS_EKS_CLUSTER_NAME
+            - kubectl get svc #remove this
+            - helm upgrade alpha ./platform/engine-api-chart --install --set deployment.imageTag=$BITBUCKET_COMMIT -n alpha
+            - helm list
+          after-script:
+            - rm -rf ~/.aws/credentials
+            - rm -rf ~/.kube
     feature/*:
       - step:
           script:
