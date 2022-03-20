@@ -24,7 +24,7 @@ pipelines:
             - echo $BITBUCKET_COMMIT #remove this
             - echo $IMAGE_NAME #remove this
             - docker build -t $IMAGE_NAME .
-            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+            - $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin
             - docker push $IMAGE_NAME
       - step:
           name: Deploy to dev env
@@ -40,7 +40,7 @@ pipelines:
           name: Deploy to production env
           deployment: production
           trigger: manual
-          image: dvdhinesh/helm-base
+          image: dvdhinesh/helm-base:main
           script:
             - echo "This step will run on a list of unit tests.";
             - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
