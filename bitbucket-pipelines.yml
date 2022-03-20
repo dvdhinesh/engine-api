@@ -1,4 +1,6 @@
-# This is an example Starter pipeline configuration
+options:
+  docker: true
+
 image: docker:latest
 
 pipelines:
