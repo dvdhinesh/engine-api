@@ -1,0 +1,36 @@
+# This is an example Starter pipeline configuration
+image: dvdhinesh/helm-base
+
+pipelines:
+  pull-requests:
+    '**': #this runs as default for any branch not elsewhere defined
+    - parallel:
+      - step:
+         script:
+            - echo "This step will run on a list of unit tests.";
+  branches:
+    main:
+      - step:
+          name: Deploy to dev env
+          deployment: dev
+          script:
+            - echo "This step will run on a list of unit tests.";
+            - echo "This step will deploy to dev environment.";
+      - step:
+          name: Deploy to staging env
+          deployment: staging
+          script:
+            - echo "This step will run on a list of unit tests.";
+            - echo "This step will deploy to staging environment.";
+      - step:
+          name: Deploy to production env
+          deployment: production
+          trigger: manual
+          script:
+            - echo "This step will run on a list of unit tests.";
+            - echo "This step will deploy to staging environment.";
+    feature/*:
+      - step:
+          script:
+            - echo "This step will run on a list of unit tests.";
+
