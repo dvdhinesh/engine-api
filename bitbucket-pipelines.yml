@@ -20,7 +20,7 @@ pipelines:
           name: Build and Push docker image
           script:
             - echo "This step will build images.";
-            - export IMAGE_NAME=dvdhinesh/engine-api:production-$BITBUCKET_COMMIT
+            - export IMAGE_NAME=dvdhinesh/engine-api:$BITBUCKET_COMMIT
             - echo $BITBUCKET_COMMIT #remove this
             - echo $IMAGE_NAME #remove this
             - docker build -t $IMAGE_NAME .
