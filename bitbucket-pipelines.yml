@@ -12,10 +12,10 @@ pipelines:
             - echo "This step will run on a list of unit tests.";
   branches:
     main:
-      # - step:
-      #     name: Run unit tests
-      #     script:
-      #       - echo "This step will run on a list of unit tests.";
+      - step:
+          name: Run unit tests
+          script:
+            - echo "This step will run on a list of unit tests.";
       - step:
           name: Build and Push docker image
           script:
@@ -28,16 +28,16 @@ pipelines:
             - docker push $IMAGE_NAME
           after-script:
             - rm -f /root/.docker/config.json
-      # - step:
-      #     name: Deploy to dev env
-      #     deployment: dev
-      #     script:
-      #       - echo "This step will deploy to dev environment.";
-      # - step:
-      #     name: Deploy to staging env
-      #     deployment: staging
-      #     script:
-      #       - echo "This step will deploy to staging environment.";
+      - step:
+          name: Deploy to dev env
+          deployment: dev
+          script:
+            - echo "This step will deploy to dev environment.";
+      - step:
+          name: Deploy to staging env
+          deployment: staging
+          script:
+            - echo "This step will deploy to staging environment.";
       - step:
           name: Deploy to production env
           deployment: production
@@ -60,4 +60,4 @@ pipelines:
       - step:
           script:
             - echo "This step will run on a list of unit tests.";
-
+            
